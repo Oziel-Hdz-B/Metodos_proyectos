@@ -93,7 +93,7 @@ VaR_df = pd.DataFrame(VaR_results, columns=[ "VaR Normal", "VaR t-Student", "VaR
 ES_df = pd.DataFrame(ES_results, columns=["ES Normal", "ES t-Student", "ES Histórico", "ES Monte Carlo"],index=['0.95', '0.975', '0.99'])
 VaR_df.index.name = 'Confianza'
 ES_df.index.name = 'Confianza'
-
+#
 st.write("### 📉 Value at Risk (VaR)")
 st.dataframe(VaR_df.style.format({"VaR Normal": "{:.2%}", "VaR t-Student": "{:.2%}", "VaR Histórico": "{:.2%}", "VaR Monte Carlo": "{:.2%}"}))
 
