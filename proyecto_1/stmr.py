@@ -15,7 +15,7 @@ st.markdown("---")
 
 # Función para obtener datos
 def obtener_datos(stock):
-    df = yf.download(stock, start='2010-01-01', end=datetime.today().strftime('%Y-%m-%d'), progress=False)
+    df = yf.download(stock, start='2010-01-01', end=datetime.today().strftime('%Y-%m-%d'))['Close']
     return df
 
 # Función para calcular rendimientos
@@ -32,17 +32,17 @@ with st.spinner("Descargando datos..."):
     df_rendimientos = calcular_rendimientos(df_precios)
 
 # Cálculo de métricas del activo
-rendimiento_medio = df_rendimientos.mean()[0]
-kurtosis_valor = kurtosis(df_rendimientos)[0]
-sesgo_valor = skew(df_rendimientos)[0]
-stdev = df_rendimientos.std()[0]
-n = len(df_rendimientos)
+rendimiento_medio = df_rendimientos[stock_seleccionado].mean()
+kurtosis_valor = kurtosis(df_rendimientos[stock_seleccionado])
+sesgo_valor = skew(df_rendimientos[stock_seleccionado])
+stdev = df_rendimientos[stock_seleccionado].std()
+n = len(df_rendimientos[stock_seleccionado])
 
 # Métricas visuales
 col1, col2, col3 = st.columns(3)
-col1.metric(label="📈 Rendimiento Medio Diario", value=f"{rendimiento_medio:.2%}")
-col2.metric(label="📊 Kurtosis", value=f"{kurtosis_valor:.2f}")
-col3.metric(label="📉 Sesgo", value=f"{sesgo_valor:.2f}")
+col1.metric("📈 Rendimiento Medio Diario", f"{rendimiento_medio:.4%}")
+col2.metric("📊 Kurtosis",f"{kurtosis_valor:.2f}")
+col3.metric("📉 Sesgo", f"{sesgo_valor:.2f}")
 style_metric_cards()
 
 
@@ -54,7 +54,7 @@ def parametric_var_es_tstudent(returns, alpha, nu=5):
     sigma = np.sqrt(sigma2)
 
     VaR = t.ppf(1 - alpha, df=nu, loc=mu, scale=sigma)
-    ES = t.expect(lambda x: x, args=(nu,), loc=mu, scale=sigma, lb=-np.inf, ub=var)
+    ES = t.expect(lambda x: x, args=(nu,), loc=mu, scale=sigma, lb=-np.inf, ub=VaR)
     return VaR, ES
 
 
@@ -65,32 +65,34 @@ ES_results = []
 
 for alpha in intervalos_confianza:
     # Cálculo de la media y desviación estándar
-    mean = np.mean(df_rendimientos)
-    stdev = np.std(df_rendimientos)
+    mean = np.mean(df_rendimientos[stock_seleccionado])
+    stdev = np.std(df_rendimientos[stock_seleccionado])
 
     # VaR y ES paramétrico Normal
     VaR_norm = norm.ppf(1 - alpha, mean, stdev)
     ES_norm = mean - (stdev * norm.pdf(norm.ppf(1 - alpha)) / (1 - alpha))
 
     # VaR y ES usando t-Student
-    VaR_t, ES_t = parametric_var_es_tstudent(df_rendimientos, alpha)
+    VaR_t, ES_t = parametric_var_es_tstudent(df_rendimientos[stock_seleccionado], alpha)
 
     # VaR y ES Histórico
-    VaR_hist = df_rendimientos.quantile(1 - alpha)[0]
-    ES_hist = df_rendimientos[df_rendimientos <= VaR_hist].mean()[0]
+    VaR_hist = df_rendimientos[stock_seleccionado].quantile(1 - alpha)
+    ES_hist = df_rendimientos[stock_seleccionado][df_rendimientos[stock_seleccionado] <= VaR_hist].mean()
 
     # VaR y ES Monte Carlo
     sim_returns = np.random.normal(mean, stdev, 100000)
     VaR_mc = np.percentile(sim_returns, (1 - alpha) * 100)
     ES_mc = sim_returns[sim_returns <= VaR_mc].mean()
 
-    VaR_results.append([alpha, VaR_norm, VaR_t, VaR_hist, VaR_mc])
-    ES_results.append([alpha, ES_norm, ES_t, ES_hist, ES_mc])
+    VaR_results.append([VaR_norm, VaR_t, VaR_hist, VaR_mc])
+    ES_results.append([ES_norm, ES_t, ES_hist, ES_mc])
 
 # Mostrar tabla de resultados
 st.subheader("📊 Resultados de VaR y Expected Shortfall")
-VaR_df = pd.DataFrame(VaR_results, columns=["Confianza", "VaR Normal", "VaR t-Student", "VaR Histórico", "VaR Monte Carlo"])
-ES_df = pd.DataFrame(ES_results, columns=["Confianza", "ES Normal", "ES t-Student", "ES Histórico", "ES Monte Carlo"])
+VaR_df = pd.DataFrame(VaR_results, columns=[ "VaR Normal", "VaR t-Student", "VaR Histórico", "VaR Monte Carlo"],index=['0.95', '0.975', '0.99'])
+ES_df = pd.DataFrame(ES_results, columns=["ES Normal", "ES t-Student", "ES Histórico", "ES Monte Carlo"],index=['0.95', '0.975', '0.99'])
+VaR_df.index.name = 'Confianza'
+ES_df.index.name = 'Confianza'
 
 st.write("### 📉 Value at Risk (VaR)")
 st.dataframe(VaR_df.style.format({"VaR Normal": "{:.2%}", "VaR t-Student": "{:.2%}", "VaR Histórico": "{:.2%}", "VaR Monte Carlo": "{:.2%}"}))
