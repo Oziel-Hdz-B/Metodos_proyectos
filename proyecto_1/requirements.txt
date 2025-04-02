@@ -1,8 +1,8 @@
-streamlit==1.29.0
-pandas==2.1.4
-numpy==1.26.2
-yfinance==0.2.31
-matplotlib==3.8.2
-scipy==1.11.4
+streamlit==1.32.2
+pandas==2.2.1
+numpy==1.26.4
+yfinance==0.2.36
+matplotlib==3.8.3
+scipy==1.12.0
 streamlit-extras==0.3.6
-python-dateutil==2.8.2  # Necesario para yfinance/datetime
+python-dateutil==2.9.0
