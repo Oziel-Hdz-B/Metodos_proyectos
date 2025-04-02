@@ -32,11 +32,11 @@ with st.spinner("Descargando datos..."):
     df_rendimientos = calcular_rendimientos(df_precios)
 
 # Cálculo de métricas del activo
-rendimiento_medio = df_rendimientos[stock_seleccionado].mean()
-kurtosis_valor = kurtosis(df_rendimientos[stock_seleccionado])
-sesgo_valor = skew(df_rendimientos[stock_seleccionado])
-stdev = df_rendimientos[stock_seleccionado].std()
-n = len(df_rendimientos[stock_seleccionado])
+rendimiento_medio = df_rendimientos.mean()
+kurtosis_valor = kurtosis(df_rendimientos)
+sesgo_valor = skew(df_rendimientos)
+stdev = df_rendimientos.std()
+n = len(df_rendimientos)
 
 # Métricas visuales
 col1, col2, col3 = st.columns(3)
