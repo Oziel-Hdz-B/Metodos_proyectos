@@ -102,7 +102,7 @@ with st.sidebar:
     # Selector de activo
     stock_seleccionado = st.selectbox(
         "**📊 Descripción del activo a analizar**", 
-        ['GOOGL', 'AAPL', 'MSFT', 'AMZN', 'TSLA'],
+        ['S&P500','GOOGL', 'AAPL', 'MSFT', 'AMZN', 'TSLA'],
         index=0
     )
     
@@ -117,6 +117,16 @@ with st.sidebar:
         st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Amazon")
     if stock_seleccionado == 'TSLA':
         st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Tesla")
+    if stock_seleccionado == "S&P500":
+            st.markdown("""
+El S&P 500 es un índice compuesto por las 500 empresas más grandes que cotizan en bolsa en EE.UU., seleccionadas por capitalización de mercado, liquidez y representatividad sectorial.
+""")
+            st.markdown("""
+            ### 📈 Importancia financiera:
+            - Benchmark: Es el principal referente para fondos de inversión y gestores de activos.
+            - Indicador económico: Refleja la salud del mercado accionario estadounidense.
+            - Derivados: Base para futuros, ETFs (como SPY) y opciones.    
+            """)
     st.markdown("---")
 
 # Función para obtener datos
@@ -263,7 +273,7 @@ with col1:
 
 with col2:
     st.metric("📊 Kurtosis", f"{kurtosis_valor:.2f}")
-    st.markdown("La kurtosis hace referencia a colas pesadas, para valores mayores a 3, y colas ligeras para vlaores menores a 3")
+    st.markdown("La kurtosis hace referencia a colas pesadas, para valores mayores a 3, y colas ligeras para valores menores a 3")
 with col3:
     st.metric("📉 Sesgo", f"{sesgo_valor:.2f}")
     st.markdown("El sesgo hace referencia a si los retornos tienden a ser positivos, para valores negativos del sesgo, o tienden a ser negativos, para valores positivos del sesgo")
