@@ -102,7 +102,7 @@ with st.sidebar:
     # Selector de activo
     stock_seleccionado = st.selectbox(
         "**📊 Descripción del activo a analizar**", 
-        ['ETH', 'NU', 'WBD', 'BAC', 'TSLA','S&P500'],
+        ['ETH', 'NU', 'WBD', 'BAC', 'T','S&P500'],
         index=0
     )
     
