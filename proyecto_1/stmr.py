@@ -156,7 +156,8 @@ cf.go_offline()
 #-------------
 
 # 1. Generar la figura con iplot 
-fig = df_precios.iplot(kind='line', title='Histórico de precios', as_figure=True)
+
+fig = px.line(df_precios, title='Histórico de precios')
 
 st.write("#### Gráfico de precios históricos")
 
