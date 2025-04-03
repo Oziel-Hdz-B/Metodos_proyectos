@@ -102,21 +102,62 @@ with st.sidebar:
     # Selector de activo
     stock_seleccionado = st.selectbox(
         "**📊 Descripción del activo a analizar**", 
-        ['GOOGL', 'AAPL', 'MSFT', 'AMZN', 'TSLA','S&P500'],
+        ['ETH', 'NU', 'WBD', 'BAC', 'TSLA','S&P500'],
         index=0
     )
     
     # Mostrar detalles del activo seleccionado
-    if stock_seleccionado == 'GOOGL':
-        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Google")
-    if stock_seleccionado == 'AAPL':
-        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Apple")
-    if stock_seleccionado == 'MSFT':
-        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Microsoft")
-    if stock_seleccionado == 'AMZN':
-        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Amazon")
-    if stock_seleccionado == 'TSLA':
-        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Tesla")
+    if stock_seleccionado == 'ETH':
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a la criptomoneda Ether")
+        st.markdown("""
+            ### 📈 Información:
+            - Ethereum es una plataforma blockchain descentralizada que permite 
+                    la creación y ejecución de contratos inteligentes y aplicaciones 
+                    descentralizadas (dApps). Su criptomoneda nativa, Ether (ETH), 
+                    es la segunda más grande por capitalización de mercado después 
+                    de Bitcoin y se utiliza para pagar comisiones de transacción y 
+                    servicios dentro de la red.
+            """)
+    if stock_seleccionado == 'NU':
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere al banco digital Nubank")
+        st.markdown("""
+            ### 📈 Información:
+            - Nu Holdings Ltd. es una empresa de tecnología financiera con sede en 
+                    Brasil, conocida por su banco digital Nubank. Ofrece servicios 
+                    bancarios como tarjetas de crédito, cuentas de ahorro y préstamos, 
+                    principalmente en América Latina. Se caracteriza por su enfoque 
+                    digital, bajos costos y fuerte crecimiento en mercados emergentes.
+            """)
+    if stock_seleccionado == 'WBD':
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a la empresa Warner Bros. Discovery")
+        st.markdown("""
+            ### 📈 Información:
+            - Warner Bros. Discovery es una empresa global de medios y entretenimiento 
+                    que surgió de la fusión entre WarnerMedia y Discovery, Inc. Posee 
+                    una amplia cartera de marcas y plataformas, incluyendo HBO, CNN, 
+                    Discovery Channel y Warner Bros. Pictures. Opera en producción, 
+                    distribución y transmisión de contenido en múltiples formatos.
+            """)
+    if stock_seleccionado == 'BAC':
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a Bank of America Corporation ")
+        st.markdown("""
+            ### 📈 Información:
+            - Bank of America es uno de los mayores bancos de EE.UU. y del mundo, 
+                   con operaciones en banca comercial, banca de inversión, gestión 
+                   de patrimonio y servicios financieros globales. Sirve tanto a 
+                   clientes individuales como institucionales y es considerado uno 
+                   de los "Big Four" del sector bancario estadounidense.
+            """)
+    if stock_seleccionado == 'T':
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a la empresa AT&T")
+        st.markdown("""
+            ### 📈 Información:
+            - AT&T es una de las mayores empresas de telecomunicaciones del mundo, 
+                    con servicios en telefonía móvil, internet, televisión y soluciones 
+                    empresariales. Ha sido históricamente un actor clave en la industria 
+                    de telecomunicaciones en EE.UU., aunque en los últimos años ha 
+                    reestructurado su portafolio con desinversiones en medios.
+            """)
     if stock_seleccionado == "S&P500":
             st.markdown("""
 El S&P 500 es un índice compuesto por las 500 empresas más grandes que cotizan en bolsa en EE.UU., seleccionadas por capitalización de mercado, liquidez y representatividad sectorial.
