@@ -8,6 +8,9 @@ from scipy.stats import kurtosis, skew, shapiro, norm, t
 from datetime import datetime
 from streamlit_extras.metric_cards import style_metric_cards
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.offline import iplot
+import cufflinks as cf  # Necesario para iplot
 from streamlit.components.v1 import html
 
 # Configuración de la página
@@ -105,15 +108,15 @@ with st.sidebar:
     
     # Mostrar detalles del activo seleccionado
     if stock_seleccionado == 'GOOGL':
-        st.markdown(f"### 📝 Descripción del {stock_seleccionado}")
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Google")
     if stock_seleccionado == 'AAPL':
-        st.markdown(f"### 📝 Descripción del {stock_seleccionado}")
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Apple")
     if stock_seleccionado == 'MSFT':
-        st.markdown(f"### 📝 Descripción del {stock_seleccionado}")
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Microsoft")
     if stock_seleccionado == 'AMZN':
-        st.markdown(f"### 📝 Descripción del {stock_seleccionado}")
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Amazon")
     if stock_seleccionado == 'TSLA':
-        st.markdown(f"### 📝 Descripción del {stock_seleccionado}")
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a las Acciones de Tesla")
     st.markdown("---")
 
 # Función para obtener datos
@@ -141,9 +144,113 @@ sesgo_valor = skew(df_rendimientos[stock_seleccionado])
 stdev = df_rendimientos[stock_seleccionado].std()
 n = len(df_rendimientos[stock_seleccionado])
 
-# Título con estilo
+#Damos cierto estilo
 st.markdown("""
-<h2 style='color: white; text-align: center;'>📊 Métricas Visuales</h2>
+<h2 style='color: white; text-align: center;'>Proyecto 1 - Métodos Cuantitativos en Finanzas </h2>
+""", unsafe_allow_html=True)
+# Configuración para cufflinks
+cf.go_offline()
+
+#-------------
+#GRAFICO DE LOS VALORES HISTORICOS
+#-------------
+
+# 1. Generar la figura con iplot (como en tu código original)
+fig = df_precios.iplot(kind='line', title='Histórico de precios', asFigure=True)
+
+st.write("#### Gráfico de precios históricos")
+
+# 2. Mostrar en Streamlit usando plotly_chart
+st.plotly_chart(fig, use_container_width=True)
+
+# Opcional: Añadir controles interactivos
+st.sidebar.header('Opciones de visualización')
+log_scale = st.sidebar.checkbox('Escala logarítmica', value=False)
+
+if log_scale:
+    # Personalizar la figura según las opciones
+    if log_scale:
+        fig.update_yaxes(type="log")
+    st.plotly_chart(fig, use_container_width=True)
+
+#--------------------
+#FIN DE GRÁFICO DE PRECIOS HISTÓRICOS
+#--------------------
+
+#-----------------
+#GRAFICO DE HISTOGRAMA
+#-----------------
+# Configuración del histograma
+st.header('Distribución de Retornos Diarios')
+
+# 1. Crear figura con mejoras visuales
+fig = go.Figure()
+
+# 2. Añadir histograma principal
+fig.add_trace(
+    go.Histogram(
+        x=df_rendimientos[stock_seleccionado],
+        nbinsx=50,  # Ajustar número de bins
+        name='Retornos',
+        marker_color='#1f77b4',
+        opacity=0.75,
+        histnorm='probability density'  # Normalizar como densidad
+    )
+)
+
+# 3. Añadir curva de densidad KDE (opcional)
+from scipy.stats import gaussian_kde
+kde = gaussian_kde(df_rendimientos[stock_seleccionado])
+x_vals = np.linspace(df_rendimientos[stock_seleccionado].min(), df_rendimientos[stock_seleccionado].max(), 100)
+fig.add_trace(
+    go.Scatter(
+        x=x_vals,
+        y=kde(x_vals),
+        name='Densidad',
+        line=dict(color='#ff7f0e', width=2)
+    )
+)
+
+# 4. Personalizar layout
+fig.update_layout(
+    title_text='Distribución de Retornos Diarios (Log Normal)',
+    xaxis_title='Retorno',
+    yaxis_title='Distribución de Probabilidad',
+    bargap=0.01,  # Espacio entre barras
+    template='plotly_white',  # o 'plotly_dark' para tema oscuro
+    hovermode='x unified'
+)
+
+# 5. Añadir línea de media
+mean_return = df_rendimientos[stock_seleccionado].mean()
+fig.add_vline(
+    x=mean_return, 
+    line_dash="dash",
+    line_color="red",
+    annotation_text=f"Media: {mean_return:.4f}", 
+    annotation_position="top right"
+)
+
+# 6. Mostrar en Streamlit con controles
+col1, col2 = st.columns(2)
+with col1:
+    bin_size = st.slider('Número de bins', 10, 100, 50)
+with col2:
+    show_kde = st.checkbox('Mostrar curva de densidad', True)
+
+fig.update_traces(nbinsx=bin_size, selector={'type':'histogram'})
+if not show_kde:
+    fig.for_each_trace(lambda trace: trace.update(visible=False) if trace.name == 'Distribución' else None)
+
+st.plotly_chart(fig, use_container_width=True)
+
+#-----------------
+#GRAFICO DE HISTOGRAMA
+#-----------------
+
+#Damos cierto estilo
+st.markdown("""
+<h2 style='color: white; text-align: center;'>📊 Métricas de Rendimientos</h2>
 """, unsafe_allow_html=True)
 
 # Columnas con métricas
@@ -151,12 +258,14 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.metric("📈 Rendimiento Medio Diario", f"{rendimiento_medio:.4%}")
+    st.markdown("Rendimiento promedio diario a la fecha actual")
 
 with col2:
     st.metric("📊 Kurtosis", f"{kurtosis_valor:.2f}")
-
+    st.markdown("La kurtosis hace referencia a colas pesadas, para valores mayores a 3, y colas ligeras para vlaores menores a 3")
 with col3:
     st.metric("📉 Sesgo", f"{sesgo_valor:.2f}")
+    st.markdown("El sesgo hace referencia a si los retornos tienden a ser positivos, para valores negativos del sesgo, o tienden a ser negativos, para valores positivos del sesgo")
 
 # CSS personalizado para tema oscuro
 st.markdown("""
@@ -202,7 +311,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Opcional: estilo adicional con streamlit-extras
+# Estilo adicional con streamlit-extras
 style_metric_cards(background_color="#1E1E1E", border_left_color="#666666", border_color="#444444")
 
 # Función para calcular VaR y ES usando t-Student

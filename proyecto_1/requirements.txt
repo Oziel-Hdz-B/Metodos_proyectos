@@ -7,3 +7,4 @@ scipy
 streamlit-extras
 python-dateutil
 plotly
+cufflinks
