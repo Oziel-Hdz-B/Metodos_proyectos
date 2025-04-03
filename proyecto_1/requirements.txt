@@ -6,3 +6,5 @@ matplotlib
 scipy
 streamlit-extras
 python-dateutil
+plotly
+streamlit.components
