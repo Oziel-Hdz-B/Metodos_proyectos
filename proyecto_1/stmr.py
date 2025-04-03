@@ -102,7 +102,7 @@ with st.sidebar:
     # Selector de activo
     stock_seleccionado = st.selectbox(
         "**📊 Descripción del activo a analizar**", 
-        ['S&P500','GOOGL', 'AAPL', 'MSFT', 'AMZN', 'TSLA'],
+        ['GOOGL', 'AAPL', 'MSFT', 'AMZN', 'TSLA','S&P500'],
         index=0
     )
     
@@ -276,7 +276,7 @@ with col2:
     st.markdown("La kurtosis hace referencia a colas pesadas, para valores mayores a 3, y colas ligeras para valores menores a 3")
 with col3:
     st.metric("📉 Sesgo", f"{sesgo_valor:.2f}")
-    st.markdown("El sesgo hace referencia a si los retornos tienden a ser positivos, para valores negativos del sesgo, o tienden a ser negativos, para valores positivos del sesgo")
+    st.markdown("El sesgo hace referencia a si los retornos tienden a ser positivos, para valores negativos del sesgo. Y tienden a ser negativos, para valores positivos del sesgo")
 
 # CSS personalizado para tema oscuro
 st.markdown("""
