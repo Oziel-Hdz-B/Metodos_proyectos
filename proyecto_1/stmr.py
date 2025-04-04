@@ -607,7 +607,7 @@ with tab2:
 
 
 # Mostrar métricas y gráfico
-st.write('### Cálculos del VaR Asumiendo distribución normal')
+st.write('### Cálculos del VaR Asumiendo distribución normal, bajo el VaR de instrucciones.')
 
 # f. FUNCIÓN VaR NORMAL
 # Calculamos el VaR usando una distribución normal
