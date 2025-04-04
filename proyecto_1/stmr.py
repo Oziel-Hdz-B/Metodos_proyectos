@@ -614,7 +614,7 @@ st.write('### Cálculos del VaR Asumiendo distribución normal')
 def var_normal(returns, alpha):
     media = returns.mean()
     desviacion = returns.std()
-    return norm.ppf(1 - alpha, loc=media, scale=desviacion) 
+    return norm.ppf(1 - alpha, loc=media, scale=desviacion)*desviacion 
 
 # Calculamos el VaR para cada nivel de confianza
 for alpha in alphas:
