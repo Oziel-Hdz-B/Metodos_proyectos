@@ -102,31 +102,33 @@ with st.sidebar:
     # Selector de activo
     stock_seleccionado = st.selectbox(
         "**📊 Descripción del activo a analizar**", 
-        ['ETH', 'NU', 'WBD', 'BAC', 'T','S&P500'],
+        ['GOOGL', 'TSLA', 'WBD', 'BAC', 'T','SPY'],
         index=0
     )
     
     # Mostrar detalles del activo seleccionado
-    if stock_seleccionado == 'ETH':
-        st.markdown(f"### 📝 {stock_seleccionado} se refiere a la criptomoneda Ether")
+    if stock_seleccionado == 'GOOGL':
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a la empresa Google")
         st.markdown("""
             ### 📈 Información:
-            - Ethereum es una plataforma blockchain descentralizada que permite 
-                    la creación y ejecución de contratos inteligentes y aplicaciones 
-                    descentralizadas (dApps). Su criptomoneda nativa, Ether (ETH), 
-                    es la segunda más grande por capitalización de mercado después 
-                    de Bitcoin y se utiliza para pagar comisiones de transacción y 
-                    servicios dentro de la red.
+            - Alphabet Inc. es la empresa matriz de Google y una de las compañías 
+                    tecnológicas más grandes del mundo. Sus principales negocios 
+                    incluyen el motor de búsqueda Google, YouTube, el sistema 
+                    operativo Android, y su división de computación en la nube. 
+                    También invierte en inteligencia artificial, vehículos autónomos 
+                    y otras áreas innovadoras a través de su subsidiaria Google 
+                    DeepMind y su división de capital de riesgo, GV.
             """)
-    if stock_seleccionado == 'NU':
-        st.markdown(f"### 📝 {stock_seleccionado} se refiere al banco digital Nubank")
+    if stock_seleccionado == 'TSLA':
+        st.markdown(f"### 📝 {stock_seleccionado} se refiere a la empresa Tesla Inc.")
         st.markdown("""
             ### 📈 Información:
-            - Nu Holdings Ltd. es una empresa de tecnología financiera con sede en 
-                    Brasil, conocida por su banco digital Nubank. Ofrece servicios 
-                    bancarios como tarjetas de crédito, cuentas de ahorro y préstamos, 
-                    principalmente en América Latina. Se caracteriza por su enfoque 
-                    digital, bajos costos y fuerte crecimiento en mercados emergentes.
+            - Tesla es una empresa líder en el sector de vehículos eléctricos y energías 
+                    renovables. Fundada por Elon Musk y otros cofundadores, se especializa 
+                    en la producción de automóviles eléctricos, baterías de almacenamiento 
+                    de energía y sistemas solares. Tesla también desarrolla tecnologías 
+                    avanzadas de conducción autónoma y opera una red global de estaciones 
+                    de carga rápida, conocida como Supercharger.
             """)
     if stock_seleccionado == 'WBD':
         st.markdown(f"### 📝 {stock_seleccionado} se refiere a la empresa Warner Bros. Discovery")
@@ -158,7 +160,7 @@ with st.sidebar:
                     de telecomunicaciones en EE.UU., aunque en los últimos años ha 
                     reestructurado su portafolio con desinversiones en medios.
             """)
-    if stock_seleccionado == "S&P500":
+    if stock_seleccionado == "SPY":
             st.markdown("""
 El S&P 500 es un índice compuesto por las 500 empresas más grandes que cotizan en bolsa en EE.UU., seleccionadas por capitalización de mercado, liquidez y representatividad sectorial.
 """)
